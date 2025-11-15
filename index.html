@@ -1,37 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velosound</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Velosound — Som Premium</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Velosound — soluções de áudio premium para residências e hotéis. Instalações, projetos e suporte com acabamento impecável." />
+
+  <style>
+    :root{
+      --bg:#0b0b0b; /* preto carbono */
+      --panel:#111111;
+      --muted:#bdbdbd;
+      --accent:#0066ff; /* azul elétrico */
+      --gold:#c9a86a;
+      --radius:12px;
+      --gap:28px;
+      --container:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg) 0%, #050505 100%);
+      color: #fff;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+
+    .wrap{max-width:var(--container);margin:0 auto;padding:36px;}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(11,11,11,0.9), rgba(11,11,11,0.6));backdrop-filter:blur(6px);}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .logo{display:flex;align-items:center;gap:12px;font-family:Montserrat, Inter;letter-spacing:1px}
+    .logo .mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+    nav ul{display:flex;gap:20px;list-style:none;margin:0;padding:0}
+    nav a{color:var(--muted);text-decoration:none;font-weight:500}
+    .cta{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:9px 14px;border-radius:10px;color:var(--muted)}
+    .btn-primary{background:var(--accent);padding:10px 16px;border-radius:10px;color:#fff;border:0;font-weight:600}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center;padding:80px 0}
+    .hero-left h1{font-family:Montserrat;font-size:56px;line-height:1.02;margin:0 0 20px}
+    .hero-left p{color:var(--muted);max-width:62ch}
+    .hero-actions{display:flex;gap:14px;margin-top:24px}
+
+    .hero-right{border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#0a0a0a,#0f0f0f);box-shadow:0 20px 40px rgba(0,0,0,0.6);}
+    .hero-media{width:100%;height:320px;display:block;object-fit:cover}
+
+    /* Services cards */
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:14px}
+    .card h3{font-family:Montserrat;margin:6px 0 10px}
+    .card p{color:var(--muted);font-size:14px}
+
+    /* Projects gallery */
+    .projects{margin-top:60px}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .proj{border-radius:12px;overflow:hidden;background:#000}
+    .proj img{width:100%;height:180px;object-fit:cover;display:block}
+    .proj .meta{padding:12px}
+
+    /* Testimonials */
+    .testimonial{margin-top:42px;padding:34px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border-radius:16px}
+    .testimonial p{font-size:20px;color:#ddd;margin:0}
+    .meta-small{color:var(--muted);margin-top:10px}
+
+    /* Why Velosound */
+    .why{display:flex;gap:24px;margin-top:42px}
+    .why .item{flex:1;background:transparent;padding:20px;border-radius:12px;text-align:center}
+    .why .icon{width:54px;height:54px;border-radius:12px;background:#0a0a0a;display:inline-grid;place-items:center;margin-bottom:10px}
+    .why h4{margin:6px 0;color:#fff}
+    .why p{color:var(--muted);font-size:14px}
+
+    /* Footer */
+    footer{margin-top:80px;padding:36px 0;border-top:1px solid rgba(255,255,255,0.03)}
+    .footer-grid{display:flex;justify-content:space-between;align-items:center}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr;}
+      .hero-left h1{font-size:44px}
+      .services{grid-template-columns:1fr}
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-right{height:220px}
+    }
+    @media (max-width:600px){
+      .wrap{padding:18px}
+      nav ul{display:none}
+      .hero-left h1{font-size:36px}
+      .projects-grid{grid-template-columns:1fr}
+    }
+
+    /* small animations */
+    .logo .mark{transform:translateY(0);transition:transform .45s cubic-bezier(.2,.9,.3,1)}
+    .logo:hover .mark{transform:translateY(-3px)}
+
+  </style>
 </head>
 <body>
-<header class="nav">
-  <img src="logo-velosound.svg" class="logo">
-  <nav>
-    <a href="#servicos">Serviços</a>
-    <a href="#portfolio">Portfólio</a>
-    <a href="#sobre">Sobre</a>
-    <a href="#contato">Contato</a>
-  </nav>
-</header>
 
-<section class="hero">
-  <h1>Experiências sonoras e automação projetadas para marcar presença.</h1>
-  <p>Do projeto estratégico à entrega técnica: soluções premium de áudio, integração e automação.</p>
-  <a class="cta" href="#contato">Quero um projeto</a>
-</section>
+  <header>
+    <div class="wrap nav">
+      <div class="logo">
+        <div class="mark">V</div>
+        <div>
+          <div style="font-weight:600;">Velosound</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.6px">Som premium & design</div>
+        </div>
+      </div>
 
-<section id="servicos" class="servicos">
-  <h2>O que fazemos</h2>
-  <div class="grid">
-    <div class="card"><h3>Projetos de Áudio</h3><p>Design acústico e integração.</p></div>
-    <div class="card"><h3>Automação Residencial</h3><p>Controle inteligente e integração.</p></div>
-    <div class="card"><h3>Consultoria & Execução</h3><p>Gerenciamento e instalação.</p></div>
-  </div>
-</section>
+      <nav>
+        <ul>
+          <li><a href="#">Início</a></li>
+          <li><a href="#services">Serviços</a></li>
+          <li><a href="#projects">Projetos</a></li>
+          <li><a href="#about">Sobre</a></li>
+          <li><a href="#contact">Contato</a></li>
+        </ul>
+      </nav>
 
-<footer class="footer">Velosound © 2025</footer>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a class="cta" href="mailto:contato@velosound.com.br">contato@velosound.com.br</a>
+        <a class="btn-primary" href="#contact">Solicitar Orçamento</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Som que transforma ambientes.<br> Tecnologia invisível. Experiência inesquecível.</h1>
+        <p>Velosound projeta e instala sistemas de áudio premium para residências e hotéis, combinando engenharia acústica, equipamentos de alto nível e acabamento arquitetônico impecável.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#contact">Solicitar Orçamento</a>
+          <a class="cta" href="#projects">Ver Projetos</a>
+        </div>
+
+        <div class="services" id="services" aria-label="Serviços">
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Instalações residenciais" style="width:100%;height:150px;object-fit:cover;border-radius:10px">
+            <h3>Instalações residenciais</h3>
+            <p>Home theaters, sistemas embutidos e automação com acabamento arquitetônico para residências de alto padrão.</p>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1558959355-6c5c6bf1f4f1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Hotéis" style="width:100%;height:150px;object-fit:cover;border-radius:10px">
+            <h3>Hotéis & empreendimentos</h3>
+            <p>Soluções de áudio que elevam a experiência do hóspede e respeitam a estética do projeto arquitetônico.</p>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1580211315972-3d6b0ee0f6b1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Consultoria" style="width:100%;height:150px;object-fit:cover;border-radius:10px">
+            <h3>Consultoria & projetos</h3>
+            <p>Projetos personalizados com análise acústica, seleção de equipamentos e integração discreta.</p>
+          </article>
+        </div>
+      </div>
+
+      <aside class="hero-right">
+        <!-- Placeholder media / vídeo thumb -->
+        <img class="hero-media" src="/assets/hero-room.jpg" alt="Sala premium com sistema embutido" onerror="this.src='https://images.unsplash.com/photo-1581276879432-15d9c6c0d3a7?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'">
+      </aside>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="projects">
+      <h2 style="font-family:Montserrat;margin:0 0 18px;font-size:28px">Projetos</h2>
+      <div class="projects-grid">
+        <div class="proj"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Projeto 1"><div class="meta"><strong>Projeto — Casa A</strong><div class="meta-small">Home theater integrado — acabamento em madeira.</div></div></div>
+        <div class="proj"><img src="https://images.unsplash.com/photo-1549187774-b4e9d1f8b9a2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Projeto 2"><div class="meta"><strong>Projeto — Hotel B</strong><div class="meta-small">Projeto de ambientes públicos e suítes.</div></div></div>
+        <div class="proj"><img src="https://images.unsplash.com/photo-1552368367-4a3a6f2ed0c2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Projeto 3"><div class="meta"><strong>Projeto — Apartamento C</strong><div class="meta-small">Sistema multiroom com controle por app.</div></div></div>
+      </div>
+
+      <div class="testimonial">
+        <p>“Transformaram completamente o ambiente. Som invisível, acabamento perfeito e atendimento impecável.”</p>
+        <div class="meta-small">— Cliente Residencial, Lago Sul</div>
+      </div>
+
+      <div class="why">
+        <div class="item"><div class="icon">🎧</div><h4>Engenharia de som</h4><p>Projetos dimensionados e testados para cada ambiente.</p></div>
+        <div class="item"><div class="icon">🏗️</div><h4>Acabamento arquitetônico</h4><p>Integração discreta aos projetos de design de interiores.</p></div>
+        <div class="item"><div class="icon">🛠️</div><h4>Suporte contínuo</h4><p>Contratos de manutenção e otimização permanente.</p></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" style="margin-top:60px">
+      <h2 style="font-family:Montserrat;font-size:28px">Sobre nós</h2>
+      <div style="display:flex;gap:24px;margin-top:18px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3 style="margin:0 0 8px">Missão</h3>
+          <p style="color:var(--muted);max-width:60ch">Criar experiências sonoras que unem tecnologia e design, elevando a vivência dos ambientes residenciais e de hospitalidade.</p>
+
+          <h3 style="margin-top:14px;margin-bottom:6px">Valores</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Excelência técnica</li>
+            <li>Estética impecável</li>
+            <li>Atendimento premium</li>
+          </ul>
+        </div>
+
+        <div style="flex:1;min-width:240px">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Equipe Velosound" style="width:100%;border-radius:12px;object-fit:cover">
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" style="margin-top:60px">
+      <h2 style="font-family:Montserrat;font-size:28px">Contato</h2>
+      <p style="color:var(--muted);margin-top:6px">Pronto para transformar seu ambiente? Agende uma visita técnica ou solicite um orçamento.</p>
+
+      <div style="display:flex;gap:20px;margin-top:18px;flex-wrap:wrap">
+        <form action="https://formspree.io/f/yourformid" method="POST" style="flex:1;min-width:280px;max-width:540px;background:var(--panel);padding:18px;border-radius:12px">
+          <label style="display:block;margin-bottom:8px;color:var(--muted)">Nome</label>
+          <input name="name" required style="width:100%;padding:10px;border-radius:8px;border:0;background:#0b0b0b;color:#fff;margin-bottom:12px">
+
+          <label style="display:block;margin-bottom:8px;color:var(--muted)">Email</label>
+          <input name="email" type="email" required style="width:100%;padding:10px;border-radius:8px;border:0;background:#0b0b0b;color:#fff;margin-bottom:12px">
+
+          <label style="display:block;margin-bottom:8px;color:var(--muted)">Mensagem</label>
+          <textarea name="message" rows="4" style="width:100%;padding:10px;border-radius:8px;border:0;background:#0b0b0b;color:#fff;margin-bottom:12px"></textarea>
+
+          <button class="btn-primary" type="submit">Enviar Mensagem</button>
+        </form>
+
+        <div style="flex:1;min-width:240px;max-width:360px">
+          <div style="background:var(--panel);padding:18px;border-radius:12px">
+            <div style="font-weight:600">Velosound</div>
+            <div style="color:var(--muted);margin-top:6px">contato@velosound.com.br</div>
+            <div style="color:var(--muted);margin-top:6px">WhatsApp: <a href="https://wa.me/55XXXXXXXXXXX" style="color:var(--accent);text-decoration:none">(xx) xxxxx-xxxx</a></div>
+            <div style="color:var(--muted);margin-top:12px;font-size:13px">Endereço (opcional): Rua Exemplo, 123 — Cidade</div>
+          </div>
+
+          <div style="margin-top:12px;color:var(--muted);font-size:13px">Siga-nos</div>
+        </div>
+      </div>
+
+    </section>
+
+    <footer>
+      <div class="wrap footer-grid">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="mark" style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff">V</div>
+          <div>
+            <div style="font-weight:600">Velosound</div>
+            <div style="color:var(--muted);font-size:13px">Som premium & design</div>
+          </div>
+        </div>
+
+        <div style="color:var(--muted);font-size:13px">© <span id="year"></span> Velosound — Todos os direitos reservados</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // small helpers
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // optional: smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',function(e){
+        const id = this.getAttribute('href');
+        if(id.length>1){
+          e.preventDefault();
+          document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      })
+    })
+  </script>
 </body>
 </html>
