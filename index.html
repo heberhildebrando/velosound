@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloSound | Automação · Áudio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset e base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Identidade Visual - VeloSound */
+        :root {
+            --cobre: #B47A55; /* Cor principal homologada */
+            --cobre-claro: #D9AF94;
+            --cobre-escuro: #7A4F33;
+            --grafite: #1a1a1a;
+        }
+
+        /* Menu fixo com efeito de esconder/mostrar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(180, 122, 85, 0.3); /* Baseado no RGB do novo cobre */
+            transition: transform 0.4s ease-in-out;
+            transform: translateY(0);
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 600; /* SemiBold */
+            color: var(--cobre);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            background: transparent; /* Fundo transparente padrão */
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 400; /* Regular */
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-menu li a:hover {
+            color: var(--cobre);
+        }
+
+        /* ========================================================
+           NOVA HERO SECTION (DESIGN PREMIUM & HIGH-END)
+           ======================================================== */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            overflow: hidden;
+        }
+
+        .hero-bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.35; /* Opacidade reduzida para sofisticação */
+            filter: brightness(55%);
+            transition: opacity 0.3s ease-out;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.5) 0%, rgba(5, 5, 5, 0.95) 100%);
+            z-index: 1;
+        }
+
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* Título aumentado, estático e com espaçamento de luxo */
+        .hero-title {
+            font-size: 6.5rem; 
+            font-weight: 600; /* SemiBold */
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+            transition: color 0.3s ease;
+        }
+
+        .hero-title:hover {
+            color: var(--cobre-claro);
+        }
+
+        /* Subtítulo oficial com mais respiro visual */
+        .hero-subtitle {
+            font-size: 1.6rem;
+            font-weight: 400; /* Regular */
+            color: #e0e0e0;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Botão de Ação onde a interatividade faz sentido */
+        .btn-premium {
+            display: inline-block;
+            padding: 16px 45px;
+            border: 2px solid var(--cobre);
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600; /* SemiBold */
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            background: transparent;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 4px;
+        }
+
+        .btn-premium:hover {
+            background: var(--cobre);
+            color: #0a0a0a;
+            box-shadow: 0 0 30px rgba(180, 122, 85, 0.4);
+            letter-spacing: 3px;
+        }
+
+        section {
+            scroll-margin-top: 80px;
+        }
+
+        /* Parallax sections */
+        .parallax-section {
+            position: relative;
+            padding: 120px 20px;
+            background-color: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 110%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.18;
+            z-index: 0;
+            transform: translateY(0);
+            will-change: transform;
+            transition: opacity 0.2s ease-out;
+        }
+
+        #sobre .parallax-bg {
+            opacity: 0.35;
+            transition: opacity 0.1s linear;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            font-weight: 600; /* SemiBold */
+            color: var(--cobre);
+            text-align: center;
+            margin-bottom: 3.5rem;
+            letter-spacing: 1px;
+        }
+
+        h2 span {
+            color: #fff;
+        }
+
+        .sobre-texto {
+            max-width: 850px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.3rem;
+            color: #ddd;
+            line-height: 1.7;
+            font-weight: 400; /* Regular */
+        }
+
+        /* Serviços */
+        .servicos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .servico-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 45px 25px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(180, 122, 85, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .servico-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--cobre);
+            box-shadow: 0 25px 35px rgba(180, 122, 85, 0.25);
+        }
+
+        .servico-card i {
+            font-size: 3.8rem;
+            color: var(--cobre);
+            margin-bottom: 22px;
+        }
+
+        .servico-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 18px;
+            color: #fff;
+            font-weight: 600; /* SemiBold */
+        }
+
+        .servico-card p {
+            color: #aaa;
+            font-size: 1rem;
+            font-weight: 400; /* Regular */
+        }
+
+        /* Galeria */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .galeria-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .galeria-item:hover img {
+            transform: scale(1.12);
+        }
+
+        .galeria-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(180, 122, 85, 0.85), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: #fff;
+            font-weight: 600; /* SemiBold */
+            font-size: 1.2rem;
+        }
+
+        .galeria-item:hover .galeria-overlay {
+            opacity: 1;
+        }
+
+        /* Vídeos */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Contato */
+        .contato-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .contato-info {
+            text-align: center;
+        }
+
+        .contato-info p {
+            margin-bottom: 35px;
+            font-size: 1.3rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: rgba(180, 122, 85, 0.1);
+            border-radius: 50%;
+            color: var(--cobre);
+            font-size: 2.3rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--cobre);
+        }
+
+        .social-links a:hover {
+            background: var(--cobre);
+            color: #0a0a0a;
+            transform: scale(1.12);
+        }
+
+        .form-contato {
+            background: rgba(255,255,255,0.05);
+            padding: 45px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(180, 122, 85, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s;
+            font-weight: 400;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--cobre);
+            border-width: 2px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 35px;
+            background: var(--cobre);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600; /* SemiBold */
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: var(--cobre-claro);
+            transform: scale(1.02);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 35px;
+            background: #050505;
+            color: #888;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(180, 122, 85, 0.2);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Botão voltar ao topo */
+        #backToTop {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            background: var(--cobre);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(180, 122, 85, 0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.2s;
+            z-index: 99;
+        }
+        #backToTop:hover {
+            background: var(--cobre-claro);
+            transform: scale(1.08);
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .navbar { padding: 0.8rem 5%; }
+            .logo { font-size: 1.4rem; }
+            .logo-img { height: 30px; }
+            .nav-menu { gap: 0.8rem; }
+            .nav-menu li a { font-size: 0.8rem; }
+            .hero-title { font-size: 3.2rem; letter-spacing: 4px; }
+            .hero-subtitle { font-size: 1.2rem; margin-bottom: 30px; }
+            h2 { font-size: 2.5rem; }
+            .parallax-section { padding: 80px 20px; min-height: auto; }
+            .contato-container { grid-template-columns: 1fr; gap: 35px; }
+            .social-links a { width: 60px; height: 60px; font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">
+            <img src="velosound-logo-boa-no-background.png" alt="VeloSound" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <span style="display: none; font-size: 2rem; color: var(--cobre);">VeloSound</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#videos">Vídeos</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-section" id="home">
+        <video class="hero-bg-video" autoplay loop muted playsinline>
+            <source src="controle-de-casa-smart.mp4" type="video/mp4">
+            <source src="escritorio-automatizado.mp4" type="video/mp4">
+        </video>
+        
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content-wrapper">
+            <h1 class="hero-title">VeloSound</h1>
+            <p class="hero-subtitle">Automação · Áudio</p>
+            <a href="#servicos" class="btn-premium">Explorar Soluções</a>
+        </div>
+    </section>
+
+    <section class="parallax-section" id="sobre">
+        <div class="parallax-bg" id="sobre-bg" style="background-image: url('https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="container">
+            <h2>Sobre <span>nós</span></h2>
+            <div class="sobre-texto fade-in">
+                <p>Somos especialistas em transformar casas em lares inteligentes. Com projetos personalizados que unem tecnologia de ponta, design sofisticado e funcionalidade, elevamos o conceito de conforto e segurança. Inovação é a nossa assinatura.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="parallax-section" id="servicos">
+        <div class="parallax-bg" style="background-image: url('https://images.pexels.com/photos/276514/pexels-photo-276514.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="container">
+            <h2>Nossas <span>Soluções</span></h2>
+            <div class="servicos-grid">
+                <div class="servico-card fade-in">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Iluminação Inteligente</h3>
+                    <p>Controle total da iluminação, cenários personalizados e economia de energia.</p>
+                </div>
+                <div class="servico-card fade-in">
+                    <i class="fas fa-volume-up"></i>
+                    <h3>Áudio Multissala</h3>
+                    <p>Som ambiente de alta definição em todos os ambientes, integrado e sem fios.</p>
+                </div>
+                <div class="servico-card fade-in">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Segurança Integrada</h3>
+                    <p>Câmeras, sensores e alarmes monitorados pelo seu smartphone.</p>
+                </div>
+                <div class="servico-card fade-in">
+                    <i class="fas fa-thermometer-half"></i>
+                    <h3>Climatização</h3>
+                    <p>Controle de temperatura por ambiente, com eficiência e conforto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="parallax-section" id="projetos">
+        <div class="parallax-bg" style="background-image: url('https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="container">
+            <h2>Projetos <span>recentes</span></h2>
+            <div class="galeria-grid">
+                <div class="galeria-item fade-in">
+                    <img src="https://images.pexels.com/photos/276514/pexels-photo-276514.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Projeto 1">
+                    <div class="galeria-overlay">Residência Moderna</div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Projeto 2">
+                    <div class="galeria-overlay">Apartamento Inteligente</div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Projeto 3">
+                    <div class="galeria-overlay">Escritório Corporativo</div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Projeto 4">
+                    <div class="galeria-overlay">Cobertura Duplex</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="parallax-section" id="videos">
+        <div class="parallax-bg" style="background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="container">
+            <h2>Vídeos <span>demonstrativos</span></h2>
+            <div class="videos-grid">
+                <div class="video-wrapper fade-in">
+                    <iframe src="sala-de-reuniao-automatizada.mp4" title="Vídeo 1" allowfullscreen></iframe>
+                </div>
+                <div class="video-wrapper fade-in">
+                    <iframe src="escritorio-automatizado.mp4" title="Vídeo 2" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="parallax-section" id="contato">
+        <div class="parallax-bg" style="background-image: url('https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"></div>
+        <div class="container">
+            <h2>Entre em <span>contato</span></h2>
+            <div class="contato-container">
+                <div class="contato-info fade-in">
+                    <p>Pronto para transformar seu ambiente? Fale conosco pelas redes sociais ou envie uma mensagem.</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="form-contato fade-in">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <input type="text" name="nome" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Seu e-mail" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="mensagem" rows="5" placeholder="Sua mensagem" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Enviar mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; <span id="year"></span> VeloSound. Todos os direitos reservados.</p>
+    </footer>
+
+    <button id="backToTop" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // Atualizar ano no rodapé
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Efeito de opacidade na hero ao rolar (Seletor atualizado para a nova classe)
+        const heroVideo = document.querySelector('.hero-bg-video');
+        const sobreBg = document.getElementById('sobre-bg');
+        
+        // Controle do menu que aparece/desaparece
+        const navbar = document.getElementById('navbar');
+        let lastScrollTop = 0;
+        const scrollThreshold = 50;
+        
+        window.addEventListener('scroll', () => {
+            let scrollY = window.scrollY;
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Opacidade da hero
+            let heroOpacity = 1 - (scrollY / 650);
+            if (heroOpacity < 0) heroOpacity = 0;
+            if (heroVideo) heroVideo.style.opacity = heroOpacity;
+
+            // Opacidade da imagem de fundo do Sobre
+            const sobreSection = document.getElementById('sobre');
+            const sobreRect = sobreSection.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            let sobreOpacity = 0;
+            if (sobreRect.top < viewportHeight && sobreRect.bottom > 0) {
+                const distanceFromCenter = Math.abs(sobreRect.top + sobreRect.height/2 - viewportHeight/2);
+                const maxDistance = viewportHeight/2 + sobreRect.height/2;
+                sobreOpacity = 0.35 * (1 - distanceFromCenter / maxDistance);
+            }
+            sobreBg.style.opacity = Math.max(0, Math.min(0.35, sobreOpacity));
+            
+            // Lógica para esconder/mostrar o menu
+            if (Math.abs(lastScrollTop - currentScroll) <= scrollThreshold) return;
+            
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            
+            lastScrollTop = currentScroll;
+        });
+
+        // Parallax dinâmico nas camadas de fundo
+        const parallaxBgs = document.querySelectorAll('.parallax-bg:not(#sobre-bg)');
+        window.addEventListener('scroll', () => {
+            let scrollY = window.scrollY;
+            parallaxBgs.forEach((bg, index) => {
+                let speed = 0.25 + (index * 0.12);
+                bg.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+
+        // Animação de fade-in ao rolar
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.25,
+            rootMargin: "0px 0px -80px 0px"
+        };
+        const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => appearOnScroll.observe(fader));
+
+        // Botão voltar ao topo
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Correção para vídeos locais
+        const videoIframes = document.querySelectorAll('.video-wrapper iframe');
+        videoIframes.forEach(iframe => {
+            iframe.addEventListener('error', function() {
+                this.parentElement.innerHTML = '<div style="background:#333; height:100%; display:flex; align-items:center; justify-content:center; color:var(--cobre);">Vídeo indisponível</div>';
+            });
+        });
+    </script>
+</body>
+</html>
